@@ -76,7 +76,6 @@ export default SignIn = ({navigation}) => {
             placeholderTextColor={'black'}
             onChangeText={text => setPassword(text)}
             value={password}
-            // secureTextEntry
           />
         </View>
         <TouchableOpacity style={styles.button} onPress={handleSignin}>

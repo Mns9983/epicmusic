@@ -27,8 +27,8 @@ export default Music = () => {
   const [duration, setDuration] = useState(0)
 
   useEffect(() => {
-    setupTrackPlayer()
     setupPlaybackListeners()
+    setupTrackPlayer()
   }, [])
 
   const setupTrackPlayer = async () => {
@@ -44,9 +44,6 @@ export default Music = () => {
     )
   }
 
-  useEffect(() => {
-    setupPlaybackListeners()
-  })
   const setupPlaybackListeners = async () => {
     // Get the duration of the current track
     const trackDuration = await TrackPlayer.getDuration()
@@ -61,9 +58,8 @@ export default Music = () => {
     return () => clearInterval(intervalId)
   }
 
-  
-//  console.log(position,duration )
   const togglePlayPause = async () => {
+    setupPlaybackListeners()
     if (isPlaying) {
       await TrackPlayer.pause()
     } else {
@@ -73,31 +69,28 @@ export default Music = () => {
   }
 
   const goToNextTrack = async () => {
-    const nextIndex = (currentTrackIndex + 1) % SongList.length
-    setCurrentTrackIndex(nextIndex)
-    await TrackPlayer.skipToNext()
+    setupPlaybackListeners()
+    // if (currentTrackIndex.length < SongList.length-1) {
+      const nextIndex = (currentTrackIndex + 1) % SongList.length
+      setCurrentTrackIndex(nextIndex)
+      await TrackPlayer.skipToNext()
+    // }
   }
 
   const goToPreviousTrack = async () => {
-    const previousIndex =
-      (currentTrackIndex - 1 + SongList.length) % SongList.length
-    setCurrentTrackIndex(previousIndex)
-    await TrackPlayer.skipToPrevious()
-  }
-
-  // const onSliderValueChange = async value => {
-  //   await TrackPlayer.seekTo(value)
+    setupPlaybackListeners()
+    // if (currentTrackIndex > 0) {
+      const previousIndex =
+        (currentTrackIndex - 1 + SongList.length) % SongList.length
+      setCurrentTrackIndex(previousIndex)
+      await TrackPlayer.skipToPrevious()
+    }
   // }
 
   const onSliderValueChange = async value => {
-  const currentPosition = value
-  setPosition(currentPosition)
-
-  const trackDuration = await TrackPlayer.getDuration()
-  setDuration(trackDuration)
-
-  await TrackPlayer.seekTo(value)
-}
+    setupPlaybackListeners()
+    await TrackPlayer.seekTo(value)
+  }
 
 const formatTime = seconds => {
   const minutes = Math.floor(seconds / 60)
@@ -106,7 +99,7 @@ const formatTime = seconds => {
 }
 
 const padWithZero = number => (number < 10 ? `0${number}` : `${number}`)
-// console.log(pos,duration)
+
   return (
     <SafeAreaView style={styles.container}>
       <MusicCard
@@ -125,13 +118,16 @@ const padWithZero = number => (number < 10 ? `0${number}` : `${number}`)
           thumbTintColor='#6d65ff'
           minimumTrackTintColor='#6d65ff'
           maximumTrackTintColor='white'
-         trackStyle={{color:'black',height:10}}
+          trackStyle={{color:'black',height:10}}
           // thumbStyle={{color:'black',height:30,width:30}}
           // thumbTouchSize={{ width: 100, height: 100 }}
         />
-        <Text style={styles.sliderLabel}>
-          {formatTime(position)} / {formatTime(duration)}
-        </Text>
+        <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+          <Text style={styles.sliderLabel}>
+            {formatTime(position)}
+          </Text>
+          <Text style={styles.sliderLabel}> {formatTime(duration)}</Text>
+        </View>
       </View>
       <View style={styles.container2}>
         <TouchableOpacity onPress={goToPreviousTrack}>
@@ -215,5 +211,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 5,
     color: 'black',
+    justifyContent:'space-between'
   },
 })

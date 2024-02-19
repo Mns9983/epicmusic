@@ -31,7 +31,7 @@ export const SongList = [
     title: 'Solo',
     artist: 'Clean Bandit',
     artwork: 'https://samplesongs.netlify.app/album-arts/solo.jpg',
-    url: 'https://samplesongs.netlify.app/Solo.mp3',
+    url: 'https://firebasestorage.googleapis.com/v0/b/btest-40877.appspot.com/o/%5BSPOTIFY-DOWNLOADER.COM%5D%20295.mp3?alt=media&token=c0994205-558e-48cb-a083-91b1e61cc51c',
     id: '5',
   },
   {
