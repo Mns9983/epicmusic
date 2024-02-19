@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "945872165470",
+    "project_id": "epicmusic-695ac",
+    "storage_bucket": "epicmusic-695ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945872165470:android:300b75654bffd57efab2cf",
+        "android_client_info": {
+          "package_name": "com.epicmusic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkgoQaDPe4Xk8NyRIBqYZMAerPEbvNVro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
