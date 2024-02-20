@@ -29,7 +29,13 @@ const MusicCard2 = ({title, artist, cover}) => (
     </View>
   </View>
 )
-
+const MusicCard3 = ({title, artist, cover}) => (
+  <View style={styles.card}>
+    <Image source={{uri: cover}} style={styles.cover} />
+    <Text style={styles.title}>{title}</Text>
+    <Text style={styles.artist}>{artist}</Text>
+  </View>
+)
 const ExtraView = () => (
   <View style={styles.extraView}>
     <Text style={styles.extraText}>Additional Content</Text>
@@ -263,10 +269,18 @@ export default Music = () => {
         <View style={styles.container3}>
           {SongList.map((song, index) => (
             <TouchableOpacity
-              key={song.id}
+       key={song.id}
               onPress={() => playSong(index)}
               style={styles.list}>
-              <Text style={styles.songListItemText}>{song.title}</Text>
+                <View style={{paddingHorizontal:10}}>
+                <Image source={{uri: song.artwork}} style={{height:70,width:70,borderRadius:10}} />
+                </View>
+        
+         <View>
+         <Text style={styles.songListItemText}>{song.title}</Text>
+              <Text style={styles.songListArtistText}>{song.artist}</Text>
+         </View>
+            
             </TouchableOpacity>
           ))}
         </View>
@@ -292,6 +306,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  card3 :{
+    height:40,
+    width:40
   },
   cover: {
     width: Dimensions.get('screen').width - 50,
@@ -365,6 +383,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     width: Dimensions.get('screen').width - 30,
+    marginBottom:90
     // height: Dimensions.get('screen').height * 0.65,
   },
   extraView: {
@@ -380,6 +399,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignSelf: 'center',
     padding: 5,
+    
   },
   extraText: {
     fontSize: 20,
@@ -388,11 +408,16 @@ const styles = StyleSheet.create({
   list: {
     marginVertical: 10,
     flexDirection: 'row',
-    justifyContent: 'center',
-    height: 55,
+    height: 85,
     backgroundColor: 'white',
     width: '90%',
     alignItems: 'center',
     borderRadius: 15,
   },
+  songListItemText :{
+    fontWeight:'700'
+  },
+  songListArtistText :{
+   
+  }
 })
