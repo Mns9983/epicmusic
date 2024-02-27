@@ -135,3 +135,42 @@ const styles = StyleSheet.create({
 });
 
 export default Explore;
+// const setupPlaybackListeners = async () => {
+//   try {
+//     // Initial setup
+//     const initialDuration = await TrackPlayer.getDuration()
+//     setDuration(initialDuration)
+
+//     const initialPosition = await TrackPlayer.getPosition()
+//     setPosition(initialPosition)
+
+//     // Set up event listener for track changes
+//     TrackPlayer.addEventListener('playback-track-changed', async event => {
+//       const newTrackDuration = await TrackPlayer.getDuration()
+//       setDuration(newTrackDuration)
+//     })
+
+//     // Set up event listener for queue end (automatic play of the next song)
+//     TrackPlayer.addEventListener('playback-queue-ended', async event => {
+//       const newPosition = await TrackPlayer.getPosition()
+//       setPosition(newPosition)
+
+//       // Play the next song
+//       const nextIndex = (currentTrackIndex + 1) % songs.length
+//       setCurrentTrackIndex(nextIndex)
+//       await playSongByIndex(nextIndex)
+//     })
+
+//     // Set up continuous position updates
+//     const intervalId = setInterval(async () => {
+//       const currentPosition = await TrackPlayer.getPosition()
+//       setPosition(currentPosition)
+//     }, 1000)
+
+//     return () => {
+//       clearInterval(intervalId)
+//     }
+//   } catch (error) {
+//     console.error('Error setting up playback listeners:', error)
+//   }
+// }
