@@ -47,7 +47,7 @@ export default Home = () => {
             focused ?(
               <Image
                 source={require('../Assets/play.png')}
-                style={{height: 30, width: 30,alignSelf:'center',marginTop:20}}
+                style={{height: 25, width: 25,alignSelf:'center',marginTop:20}}
                 resizeMode="contain"
               /> ) :(
                 <Image
@@ -74,7 +74,7 @@ export default Home = () => {
            focused ? (
               <Image
                 source={require('../Assets/headphone.png')}
-                style={{height: 30, width: 30,alignSelf:'center',marginTop:20}}
+                style={{height: 25, width:25,alignSelf:'center',marginTop:20}}
                 resizeMode="contain"
               /> ): (
               <Image
@@ -89,6 +89,7 @@ export default Home = () => {
       <Tab.Screen
         name="Me"
         component={Me}
+        initialParams={{ selectedSongs: [] }}
         options={{
           tabBarLabel: ({focused}) =>
             focused ? <Text></Text> : <Text style={styles.MusicText}>Me</Text>,
@@ -96,7 +97,7 @@ export default Home = () => {
             focused ? (
               <Image
                 source={require('../Assets/user.png')}
-                style={{height: 30, width: 30,alignSelf:'center',marginTop:20}}
+                style={{height: 25, width: 25,alignSelf:'center',marginTop:20}}
                 resizeMode="contain"
               />
             ) : (
@@ -134,6 +135,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   MusicText: {
+    fontSize:11,
     color: 'black',
     fontWeight: '600',
   },
