@@ -11,11 +11,14 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
   ImageBackground,
+  ActivityIndicator,
+  StatusBar,
 } from 'react-native'
 // import {SongList} from '../SongList'
 import TrackPlayer from 'react-native-track-player'
 import Slider from 'react-native-slider'
 import {getAll} from 'react-native-get-music-files'
+import {useNavigation, useRoute} from '@react-navigation/native'
 
 const MusicCard = ({title, artist, cover}) => (
   <View style={styles.card}>
@@ -49,20 +52,7 @@ const MusicCard2 = ({title, artist, cover}) => (
   </View>
 )
 
-// const MusicCard3 = ({title, artist, cover}) => (
-//   <View style={styles.card}>
-//     <Image source={{uri: cover}} style={styles.cover} />
-//     <Text style={styles.title}>{title}</Text>
-//     <Text style={styles.artist}>{artist}</Text>
-//   </View>
-// )
-// const ExtraView = () => (
-//   <View style={styles.extraView}>
-//     <Text style={styles.extraText}>Additional Content</Text>
-//   </View>
-// )
-
-export default Music = () => {
+export default Music = ({navigation}) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0)
   const [position, setPosition] = useState(0)
@@ -73,6 +63,10 @@ export default Music = () => {
   const [selectedTitle, setSelectedTitle] = useState('')
   const [selectedArtist, setSelectedArtist] = useState('')
   const [selectedCover, setSelectedCover] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+  const [selectedSongs, setSelectedSongs] = useState([])
+  
+  const route = useRoute()
 
   useEffect(() => {
     setupPlaybackListeners()
@@ -131,6 +125,7 @@ export default Music = () => {
   }
 
   const fetchSongs = async () => {
+    setIsLoading(true)
     try {
       const tracks = await getAll({
         id: true,
@@ -141,12 +136,21 @@ export default Music = () => {
         genre: true,
         cover: true,
         minimumSongDuration: 10000,
-        limit: 20,
+        type: 'audio/mp3',
+        limit: 10,
         sortByName: true,
       })
       setSongs(tracks)
+
+      // if (tracks.length === displayedItemsCount) {
+      //   setIsLoading(false)
+      // }
     } catch (error) {
       console.error('Error fetching songs:', error)
+      setIsLoading(true)
+    } finally {
+      setIsLoading(false)
+      console.log('Songs loaded , loading off')
     }
   }
   const playSong = async index => {
@@ -272,9 +276,29 @@ export default Music = () => {
 
     setShowExtraView(scrollPosition > scrollThreshold)
   }
+  // const addToSelectedSongs = selectedSong => {
+  //   setSelectedSongs(prevSelectedSongs => [...prevSelectedSongs, selectedSong])
+
+  //   // Update the selectedSongs parameter in route.params for the Me screen
+  //   navigation.setParams({selectedSongs: [...selectedSong, selectedSong]})
+  // }
+const addToSelectedSongs = song => {
+  setSelectedSongs(prevSongs => [...prevSongs, song])
+  console.log('sending',selectedSongs);
+}
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: '#f7f5fd'}}>
+      <StatusBar
+        backgroundColor='#f3f0fd'
+        barStyle='dark-content'
+        hidden={false}
+      />
+      {isLoading ? (
+        <View style={{position: 'absolute', right: 10, top: 5, zIndex: +1}}>
+          <ActivityIndicator animating={true} size='small' color='#6d65ff' />
+        </View>
+      ) : null}
       {showExtraView && (
         <View style={styles.extraView}>
           <TouchableOpacity
@@ -351,7 +375,7 @@ export default Music = () => {
         </View>
       )}
       <ScrollView
-        style={{flex: 1}}
+        style={{flex: 1, marginTop: 10}}
         ref={scrollViewRef}
         onScroll={handleScroll}
         scrollEventThrottle={50}>
@@ -411,6 +435,44 @@ export default Music = () => {
                 style={{height: 40, width: 40}}
               />
             </TouchableOpacity>
+            {isLoading ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  right: 20,
+                  bottom: 0,
+                  zIndex: +1,
+                  backgroundColor: 'white',
+                  borderRadius: 40,
+                }}>
+                <ActivityIndicator
+                  animating={true}
+                  size='small'
+                  color='#6d65ff'
+                />
+              </View>
+            ) : (
+              <View
+                style={{
+                  position: 'absolute',
+                  right: 20,
+                  bottom: 0,
+                  zIndex: +1,
+                  backgroundColor: 'white',
+                  borderRadius: 40,
+                }}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 8,
+                    padding: 5,
+                    fontWeight: 'bold',
+                    color: '#6d65ff',
+                  }}>
+                  {songs.length}
+                </Text>
+              </View>
+            )}
           </View>
           <FlatList
             horizontal={true}
@@ -426,24 +488,24 @@ export default Music = () => {
                       source={{uri: item.cover}}
                       style={{
                         height: 135,
-                        width: 135,
+                        width: 125,
                         resizeMode: 'cover',
                         alignSelf: 'center',
                         borderRadius: 15,
                         overflow: 'hidden',
+                        // marginTop:5
                       }}
                     />
                   ) : (
                     <Image
                       style={{
                         height: 135,
-                        width: 135,
+                        width: 125,
                         resizeMode: 'cover',
                         alignSelf: 'center',
                         borderRadius: 15,
                         overflow: 'hidden',
                         // opacity: 0.9,
-        
                       }}
                       source={require('../Assets/cover1.png')}
                     />
@@ -456,19 +518,14 @@ export default Music = () => {
                       alignSelf: 'center',
                       opacity: 1,
                     }}>
-                    <Text
-                      style={[
-                        styles.songListItemText,
-                        {},
-                      ]}>
-                      {item.title}
-                    </Text>
+                    <Text style={styles.songListItemText}>{item.title}</Text>
                   </View>
                 </View>
               </TouchableOpacity>
             )}
           />
         </SafeAreaView>
+
         <FlatList
           style={{paddingBottom: 70}}
           data={songs}
@@ -492,10 +549,31 @@ export default Music = () => {
               </View>
 
               <View
-                style={{maxWidth: '70%', maxHeight: '80%', overflow: 'scroll'}}>
+                style={{
+                  maxWidth: '70%',
+                  maxHeight: '80%',
+                  overflow: 'scroll',
+                }}>
                 <Text style={styles.songListItemText}>{item.title}</Text>
                 <Text style={styles.songListArtistText}>{item.artist}</Text>
               </View>
+              <TouchableOpacity
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 40,
+                  backgroundColor: '#efebfc',
+                  position: 'absolute',
+                  right: 10,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={() => addToSelectedSongs(item)}>
+                <Image
+                  style={{width: 30, height: 30, resizeMode: 'contain'}}
+                  source={require('../Assets/diamond.png')}
+                />
+              </TouchableOpacity>
             </TouchableOpacity>
           )}
         />
@@ -509,7 +587,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: 'white',
+    paddingTop: 10,
     width: Dimensions.get('screen').width,
     height: Dimensions.get('screen').height * 0.87,
   },
@@ -643,22 +721,44 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 15,
     alignSelf: 'center',
+    shadowColor: '#6d65ff',
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 10,
   },
   list2: {
- 
     marginTop: 10,
     marginBottom: 5,
-    marginHorizontal:10,
+    marginHorizontal: 10,
     // flexDirection: 'row',
     height: 150,
-    width: 150,
+    width: 140,
     alignItems: 'center',
     borderRadius: 15,
     alignSelf: 'center',
+    backgroundColor: 'white',
     justifyContent: 'center',
+    shadowColor: '#6d65ff',
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 10,
   },
   songListItemText: {
     fontWeight: '700',
+    fontSize: 13,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    height: 30,
+    // backgroundColor: 'red',
+    overflow: 'hidden',
   },
   songListArtistText: {},
 })
