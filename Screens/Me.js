@@ -1,17 +1,17 @@
 import {StyleSheet, Text, View, ScrollView, Image, FlatList} from 'react-native'
 import React from 'react'
-import {useRoute} from '@react-navigation/native'
+// import {useRoute} from '@react-navigation/native'
 
 export default function Me () {
-  const route = useRoute()
-  const {selectedSongs} = route.params
-console.log(selectedSongs);
+//   const route = useRoute()
+//   const {selectedSongs} = route.params
+// console.log(selectedSongs);
   return (
     <View style={styles.parent}>
       <View style={styles.container1}>
         <Text>Me</Text>
       </View>
-      <View style={styles.container2}>
+      {/* <View style={styles.container2}>
         <Text>Me{selectedSongs}</Text>
         <FlatList
           data={selectedSongs}
@@ -23,7 +23,7 @@ console.log(selectedSongs);
             </View>
           )}
         />
-      </View>
+      </View> */}
       <View style={styles.container3}>
         <Image
           style={{
@@ -32,7 +32,7 @@ console.log(selectedSongs);
             borderRadius: 100,
             backgroundColor: '#6d65ff',
           }}
-          source={require('../Assets/cover2.png')}
+          source={require('../Assets/musicicon.png')}
         />
         <View>
           <Text style={{fontWeight: 'bold', fontSize: 30}}>UserName</Text>
