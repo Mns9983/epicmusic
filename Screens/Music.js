@@ -25,7 +25,7 @@ const MusicCard = ({title, artist, cover}) => (
     {cover ? (
       <Image source={{uri: cover}} style={styles.cover} />
     ) : (
-      <Image style={styles.cover} source={require('../Assets/cover1.png')} />
+      <Image style={styles.cover} source={require('../Assets/musicicon.png')} />
     )}
     <Text style={styles.title}>{title}</Text>
     <Text style={styles.artist}>{artist}</Text>
@@ -37,7 +37,7 @@ const MusicCard2 = ({title, artist, cover}) => (
     {cover ? (
       <Image source={{uri: cover}} style={styles.cover2} />
     ) : (
-      <Image style={styles.cover2} source={require('../Assets/cover1.png')} />
+      <Image style={styles.cover2} source={require('../Assets/musicicon.png')} />
     )}
     <View
       style={{
@@ -137,7 +137,7 @@ export default Music = ({navigation}) => {
         cover: true,
         minimumSongDuration: 10000,
         type: 'audio/mp3',
-        limit: 10,
+        // limit: 10,
         sortByName: true,
       })
       setSongs(tracks)
@@ -507,7 +507,7 @@ const addToSelectedSongs = song => {
                         overflow: 'hidden',
                         // opacity: 0.9,
                       }}
-                      source={require('../Assets/cover1.png')}
+                      source={require('../Assets/musicicon.png')}
                     />
                   )}
                   <View
@@ -543,7 +543,7 @@ const addToSelectedSongs = song => {
                 ) : (
                   <Image
                     style={{height: 70, width: 70, borderRadius: 10}}
-                    source={require('../Assets/cover1.png')}
+                    source={require('../Assets/musicicon.png')}
                   />
                 )}
               </View>

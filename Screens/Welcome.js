@@ -1,5 +1,5 @@
-import {NavigationContainer} from '@react-navigation/native';
-import React, {useState} from 'react';
+import {NavigationContainer} from '@react-navigation/native'
+import React, {useState} from 'react'
 import {
   View,
   TextInput,
@@ -9,7 +9,7 @@ import {
   Text,
   Image,
   TouchableOpacity,
-} from 'react-native';
+} from 'react-native'
 
 export default Welcome = ({navigation}) => {
   return (
@@ -42,9 +42,16 @@ export default Welcome = ({navigation}) => {
         onPress={() => navigation.navigate('Signup')}>
         <Text style={styles.signupButtonText}>Sign Up</Text>
       </TouchableOpacity>
+      <Text
+        onPress={() => {
+          navigation.navigate('Home')
+        }}
+        style={{fontSize: 12, fontWeight: 'bold', alignSelf: 'center'}}>
+        Direct Goto Home
+      </Text>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -102,7 +109,7 @@ const styles = StyleSheet.create({
     height: '6%',
     justifyContent: 'center',
     borderRadius: 15,
-    marginBottom:20
+    marginBottom: 20,
   },
   signupButtonText: {
     alignSelf: 'center',
@@ -115,4 +122,4 @@ const styles = StyleSheet.create({
     color: '#6d65ff',
     fontSize: 18,
   },
-});
+})
